@@ -1,8 +1,6 @@
 #include <runtime.h>
 #include <unix/unix.h>
-
 #include <http/http.h>
-// rfc 2616
 
 struct http_server {
     heap h, p;
@@ -113,8 +111,9 @@ static void session_buffer(session s,
                     table_set(s->headers,
                               intern_buffer(s->fields[name]),
                               intern_buffer(s->fields[property]));
-                    // we're interning these because they should be visible in
-                    // eve-land, but is that really what we want?
+                    // add some kind of bag scoping or refcounts so 
+                    // we dont just accumulate referer and cookies, and
+                    // such indefiniately
                     buffer_clear(s->fields[name]);
                     buffer_clear(s->fields[property]);
                     s->s = name;

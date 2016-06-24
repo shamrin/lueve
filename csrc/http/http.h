@@ -43,3 +43,6 @@ buffer_handler websocket_send_upgrade(heap h,
 // should be asynch...but you know
 typedef  closure(http_service, buffer_handler, table, buffer_handler *);
 void http_register_service(http_server, http_service, string);
+
+// buffer handler with integer status 
+typedef closure(http_response, buffer, int, thunk);
