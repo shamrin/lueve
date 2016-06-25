@@ -202,7 +202,7 @@ static void bind_try(tcpsock t, new_client n)
 
 
 void tcp_create_client (heap h,
-                        table addr,
+                        station addr,
                         buffer_handler each,
                         thunk connected)
 {
@@ -218,7 +218,7 @@ void tcp_create_client (heap h,
 
 // a handle to reclaim me? - maybe a nice thunk?
 void tcp_create_server(heap h,
-                       table addr,
+                       station addr,
                        new_client n,
                        thunk bound)
 {

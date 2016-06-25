@@ -49,8 +49,13 @@ ticks now();
 typedef closure(new_client, buffer_handler, buffer_handler_handler, station);
 
 void tcp_create_server(heap h,
-                       table addr,
+                       station addr,
                        new_client n,
+                       thunk bound);
+
+void tcp_create_client(heap h,
+                       station addr,
+                       buffer_handler n,
                        thunk bound);
 
 void unix_wait();

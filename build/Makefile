@@ -33,7 +33,7 @@ CORE = buffer.o table.o vector.o format.o rolling.o string.o pqueue.o timer.o
 CORE_H = bswap.h pqueue.h vector.h buffer.h heap.h timer.h continuation.h core.h string.h table.h
 RUNTIME =  edb.o init.o uuid.o estring.o types.o luanne.o json_request.o exec.o runner.o
 RUNTIME_H = ./luanne.h ./runtime.h ./estring.h ./number.h ./types.h
-HTTP = server.o websocket.o base64.o sha1.o
+HTTP = server.o websocket.o base64.o sha1.o hmac_sha2.o sha256.o client.o
 HTTP_H = ./http/http.h
 
 continuation_templates.h: continuations.py

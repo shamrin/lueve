@@ -9,10 +9,8 @@
 #ifndef SHA256_H
 #define SHA256_H
 
-/*************************** HEADER FILES ***************************/
-#include <stddef.h>
-
 /****************************** MACROS ******************************/
+#define SHA256_DIGEST_SIZE 32            // SHA256 outputs a 32 byte digest
 #define SHA256_BLOCK_SIZE 32            // SHA256 outputs a 32 byte digest
 
 /**************************** DATA TYPES ****************************/
@@ -24,11 +22,11 @@ typedef struct {
 	WORD datalen;
 	unsigned long long bitlen;
 	WORD state[8];
-} SHA256_CTX;
+} sha256_ctx;
 
 /*********************** FUNCTION DECLARATIONS **********************/
-void sha256_init(SHA256_CTX *ctx);
-void sha256_update(SHA256_CTX *ctx, const BYTE data[], size_t len);
-void sha256_final(SHA256_CTX *ctx, BYTE hash[]);
+void sha256_init(sha256_ctx *ctx);
+void sha256_update(sha256_ctx *ctx, const BYTE data[], bytes len);
+void sha256_final(sha256_ctx *ctx, BYTE hash[]);
 
 #endif   // SHA256_H
