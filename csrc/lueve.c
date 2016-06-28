@@ -30,17 +30,17 @@ static void run_test(bag root, buffer b, boolean tracing)
     table_set(scopes, intern_cstring("session"), event);
     table_set(scopes, intern_cstring("transient"), event);
 
-    // take this from a pool
-    interpreter c = build_lua(root, scopes);
-    node n = lua_compile_eve(c, b, tracing);
+    node n = compile_eve(b, tracing);
     edb_register_implication(event, n);
     table persisted = create_value_table(h);
     table counts = allocate_table(h, key_from_pointer, compare_pointer);
-    table result_bags = start_fixedpoint(h, scopes, persisted, counts);
-    table_foreach(result_bags, n, v) {
+    solver s = build_solver(h, scopes, persisted, counts);
+    run_solver(s);
+    
+    table_foreach(s->solution, n, v) {
         prf("%v %b\n", n, bag_dump(h, v));
     }
-    h->destroy(h);
+    destroy(h);
 }
 
 int main(int argc, char **argv)
@@ -48,7 +48,6 @@ int main(int argc, char **argv)
     init_runtime();
     bag root = create_bag(generate_uuid());
     boolean enable_tracing = false;
-
     interpreter c = build_lua();
 
     boolean doParse = false;
@@ -124,20 +123,38 @@ int main(int argc, char **argv)
     http_server h = create_http_server(init, create_station(0, 8080));
     extern unsigned char index_start, index_end;
     register_static_content(h, "/", "text/html", wrap_buffer(init, &index_start,
-                                                             &index_end - &index_start));
+                                                             &index_end - &index_start),
+                            (char *)&index_end);
 
 
     extern unsigned char renderer_start, renderer_end;
+
     register_static_content(h, "/jssrc/renderer.js",
                             "application/javascript",
                             wrap_buffer(init,  &renderer_start,
-                                        &renderer_end -  &renderer_start));
+                                        &renderer_end -  &renderer_start),
+                            (char *) &renderer_end);
 
     extern unsigned char microReact_start, microReact_end;
     register_static_content(h, "/jssrc/microReact.js",
                             "application/javascript",
                             wrap_buffer(init,  &microReact_start,
-                                        &microReact_end -  &microReact_start));
+                                        &microReact_end -  &microReact_start),
+                            (char *) &microReact_end);
+
+    extern unsigned char codemirror_start, codemirror_end;
+    register_static_content(h, "/jssrc/codemirror.js",
+                            "application/javascript",
+                            wrap_buffer(init,  &codemirror_start,
+                                        &codemirror_end -  &codemirror_start),
+                            (char *) &codemirror_end);
+
+    extern unsigned char codemirrorCss_start, codemirrorCss_end;
+    register_static_content(h, "/jssrc/codemirror.css",
+                            "text/css",
+                            wrap_buffer(init,  &codemirrorCss_start,
+                                        &codemirrorCss_end -  &codemirrorCss_start),
+                            (char *) &codemirrorCss_end);
 
     init_json_service(h, root, enable_tracing);
 
