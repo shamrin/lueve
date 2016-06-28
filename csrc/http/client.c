@@ -9,8 +9,8 @@ typedef struct client {
 } *client;
 
 
-static CONTINUATION_1_1(client_input, buffer, thunk)
-static void client_input(buffer b, thunk t)
+static CONTINUATION_2_1(client_input, client, buffer, thunk)
+     static void client_input(client c, buffer b, thunk t)
 {
     apply(t);
 }
