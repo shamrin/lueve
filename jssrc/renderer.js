@@ -405,8 +405,8 @@ window.addEventListener("dblclick", function(event) {
 window.addEventListener("input", function(event) {
   let {target} = event;
   if(target.entity) {
-    let objs = [{tags: ["input"], element: target.entity, value: target.value}];
-    // sendEventObjs(objs);
+    let objs = [{tags: ["input-event"], element: target.entity, value: target.value}];
+    sendEventObjs(objs);
   }
 });
 
